@@ -1,5 +1,12 @@
 lvim.log.level = "warn"
-lvim.format_on_save = true
+lvim.format_on_save = {
+  ---@usage pattern string pattern used for the autocommand (e.g: "*.c" to only format c files)
+  pattern = "*",
+  ---@usage timeout number timeout in ms for the format request (Default: 1 second)
+  timeout = 1000,
+  ---@usage filter func to select client
+  filter = require("lvim.lsp.handlers").format_filter,
+}
 lvim.colorscheme = "onedarker"
 lvim.leader = "space"
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
@@ -11,50 +18,50 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
 
 lvim.builtin.treesitter.ensure_installed = {
-	"bash",
-	"c",
-	"cpp",
-	"javascript",
-	"json",
-	"lua",
-	"python",
-	"typescript",
-	"tsx",
-	"css",
-	"rust",
-	"java",
-	"yaml",
+  "bash",
+  "c",
+  "cpp",
+  "javascript",
+  "json",
+  "lua",
+  "python",
+  "typescript",
+  "tsx",
+  "css",
+  "rust",
+  "java",
+  "yaml",
 }
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
 lvim.autocommands.custom_groups = {
-	{ "FileType", "c,cpp", "setlocal ts=4 sw=4" },
+  { "FileType", "c,cpp", "setlocal ts=4 sw=4" },
 }
 
 vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "clangd" })
 
 local clangd_flags = {
-	"--fallback-style=google",
-	"--background-index",
-	"-j=12",
-	"--all-scopes-completion",
-	"--pch-storage=disk",
-	"--clang-tidy",
-	"--log=error",
-	"--completion-style=detailed",
-	"--header-insertion=iwyu",
-	"--header-insertion-decorators",
-	"--enable-config",
-	"--offset-encoding=utf-16",
-	"--ranking-model=heuristics",
-	"--folding-ranges",
+  "--fallback-style=google",
+  "--background-index",
+  "-j=12",
+  "--all-scopes-completion",
+  "--pch-storage=disk",
+  "--clang-tidy",
+  "--log=error",
+  "--completion-style=detailed",
+  "--header-insertion=iwyu",
+  "--header-insertion-decorators",
+  "--enable-config",
+  "--offset-encoding=utf-16",
+  "--ranking-model=heuristics",
+  "--folding-ranges",
 }
 
 local clangd_bin = "clangd"
 
 local opts = {
-	cmd = { clangd_bin, unpack(clangd_flags) },
+  cmd = { clangd_bin, unpack(clangd_flags) },
 }
 require("lvim.lsp.manager").setup("clangd", opts)
